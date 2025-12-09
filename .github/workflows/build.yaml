@@ -17,7 +17,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
-      - name: Setup .NET9
+      - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.x
