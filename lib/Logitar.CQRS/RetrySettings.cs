@@ -86,14 +86,16 @@ public record RetrySettings
           errors.Add($"'{nameof(ExponentialBase)}' must be greater than 1.");
         }
         break;
+      case RetryAlgorithm.Fixed:
+        if (MaximumDelay > 0)
+        {
+          errors.Add($"'{nameof(MaximumDelay)}' must be 0 when '{nameof(Algorithm)}' is {Algorithm}.");
+        }
+        break;
       case RetryAlgorithm.Linear:
         if (Delay <= 0)
         {
           errors.Add($"'{nameof(Delay)}' must be greater than 0.");
-        }
-        if (MaximumDelay > 0)
-        {
-          errors.Add($"'{nameof(Delay)}' must be 0 when '{nameof(Algorithm)}' is {Algorithm}.");
         }
         break;
       case RetryAlgorithm.Random:
@@ -111,14 +113,14 @@ public record RetrySettings
         }
         if (MaximumDelay > 0)
         {
-          errors.Add($"'{nameof(Delay)}' must be 0 when '{nameof(Algorithm)}' is {Algorithm}.");
+          errors.Add($"'{nameof(MaximumDelay)}' must be 0 when '{nameof(Algorithm)}' is {Algorithm}.");
         }
         break;
-      case RetryAlgorithm.Fixed:
       case RetryAlgorithm.None:
         break;
       default:
-        throw new ArgumentOutOfRangeException(nameof(Algorithm));
+        errors.Add($"'{nameof(Algorithm)}' is not a valid retry algorithm.");
+        break;
     }
 
     if (MaximumRetries < 0)
