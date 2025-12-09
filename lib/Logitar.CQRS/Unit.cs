@@ -15,7 +15,7 @@ public readonly struct Unit
   /// <summary>
   /// Gets a completed task from the default and only unit value.
   /// </summary>
-  public static Task<Unit> Task => System.Threading.Tasks.Task.FromResult(Value);
+  public static Task<Unit> CompletedTask => Task.FromResult(Value);
 
   /// <summary>
   /// Returns a value indicating whether or not the specified units are equal.
