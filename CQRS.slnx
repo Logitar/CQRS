@@ -8,5 +8,8 @@
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/Logitar.CQRS.Tests/Logitar.CQRS.Tests.csproj" Id="2606ed5e-6139-4692-adc8-a4a37830dfba" />
+  </Folder>
   <Project Path="lib/Logitar.CQRS/Logitar.CQRS.csproj" />
 </Solution>

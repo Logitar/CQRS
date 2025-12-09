@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Logitar.CQRS;
+﻿namespace Logitar.CQRS;
 
 /// <summary>
 /// Represents a void type, since <see cref="Void"/> is not a valid return type in C#.

@@ -38,6 +38,7 @@
     <PackageReference Include="Logitar" Version="10.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +54,12 @@
       <PackagePath>\</PackagePath>
       <Pack>True</Pack>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="System.Reflection" />
+    <Using Include="System.Text" />
   </ItemGroup>
 
 </Project>

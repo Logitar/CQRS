@@ -57,4 +57,83 @@ public record RetrySettings
 
     return settings;
   }
+
+  /// <summary>
+  /// Validates the retry settings.
+  /// </summary>
+  public void Validate()
+  {
+    List<string> errors = new(capacity: 7);
+
+    if (Delay < 0)
+    {
+      errors.Add($"'{nameof(Delay)}' must be greater than or equal to 0.");
+    }
+    if (MaximumDelay < 0)
+    {
+      errors.Add($"'{nameof(MaximumDelay)}' must be greater than or equal to 0.");
+    }
+
+    switch (Algorithm)
+    {
+      case RetryAlgorithm.Exponential:
+        if (Delay <= 0)
+        {
+          errors.Add($"'{nameof(Delay)}' must be greater than 0.");
+        }
+        if (ExponentialBase <= 1)
+        {
+          errors.Add($"'{nameof(ExponentialBase)}' must be greater than 1.");
+        }
+        break;
+      case RetryAlgorithm.Linear:
+        if (Delay <= 0)
+        {
+          errors.Add($"'{nameof(Delay)}' must be greater than 0.");
+        }
+        if (MaximumDelay > 0)
+        {
+          errors.Add($"'{nameof(Delay)}' must be 0 when '{nameof(Algorithm)}' is {Algorithm}.");
+        }
+        break;
+      case RetryAlgorithm.Random:
+        if (Delay <= 0)
+        {
+          errors.Add($"'{nameof(Delay)}' must be greater than 0.");
+        }
+        if (RandomVariation <= 0)
+        {
+          errors.Add($"'{nameof(RandomVariation)}' must be greater than 0.");
+        }
+        if (RandomVariation > Delay)
+        {
+          errors.Add($"'{nameof(RandomVariation)}' must be less than or equal to '{nameof(Delay)}'.");
+        }
+        if (MaximumDelay > 0)
+        {
+          errors.Add($"'{nameof(Delay)}' must be 0 when '{nameof(Algorithm)}' is {Algorithm}.");
+        }
+        break;
+      case RetryAlgorithm.Fixed:
+      case RetryAlgorithm.None:
+        break;
+      default:
+        throw new ArgumentOutOfRangeException(nameof(Algorithm));
+    }
+
+    if (MaximumRetries < 0)
+    {
+      errors.Add($"'{nameof(MaximumRetries)}' must be greater than or equal to 0.");
+    }
+
+    if (errors.Count > 0)
+    {
+      StringBuilder message = new("Validation failed.");
+      foreach (string error in errors)
+      {
+        message.AppendLine().Append(" - ").Append(error);
+      }
+      throw new InvalidOperationException(message.ToString());
+    }
+  }
 }
