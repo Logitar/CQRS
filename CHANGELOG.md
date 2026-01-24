@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Nothing yet.
 
+## [10.0.1] - 2026-01-23
+
+### Fixed
+
+- NuGet upgrade.
+
 ## [10.0.0] - 2025-12-08
 
 ### Added
@@ -17,5 +23,6 @@ Nothing yet.
 - Implemented Command Query Responsibility Segregation pattern, with `CommandBus` and `QueryBus`.
 - Added `DependencyInjectionExtensions`.
 
-[unreleased]: https://github.com/Logitar/EventSourcing/compare/v10.0.0...HEAD
+[unreleased]: https://github.com/Logitar/EventSourcing/compare/v10.0.1...HEAD
+[10.0.1]: https://github.com/Logitar/EventSourcing/compare/v10.0.0...v10.0.1
 [10.0.0]: https://github.com/Logitar/EventSourcing/releases/tag/v10.0.0
