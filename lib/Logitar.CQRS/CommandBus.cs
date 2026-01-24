@@ -82,6 +82,8 @@ public class CommandBus : ICommandBus
         {
           throw;
         }
+
+        OnException(exception);
         innerException = exception;
 
         int millisecondsDelay = CalculateMillisecondsDelay(command, exception, attempt);
@@ -141,6 +143,15 @@ public class CommandBus : ICommandBus
       throw new InvalidOperationException(message.ToString());
     }
     return handlers.Single();
+  }
+
+  /// <summary>
+  /// Invoked when an exception occurs during processing to allow for custom exception handling.
+  /// </summary>
+  /// <remarks>Override this method in a derived class to implement custom logic for handling exceptions. The base implementation does nothing.</remarks>
+  /// <param name="exception">The exception that was thrown. Cannot be null.</param>
+  protected virtual void OnException(Exception exception)
+  {
   }
 
   /// <summary>
