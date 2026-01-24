@@ -214,6 +214,31 @@ public class CommandBusTests
     Assert.True(minimum <= delay && delay <= maximum);
   }
 
+  [Fact(DisplayName = "ExecuteAsync: it should call OnException when an execution is retried.")]
+  public async Task Given_Exception_When_ExecuteAsync_Then_OnException()
+  {
+    ServiceCollection services = new();
+    services.AddSingleton<ICommandHandler<Command, Unit>, ArgumentOutOfRangeCommandHandler>();
+    services.AddSingleton(new RetrySettings
+    {
+      Algorithm = RetryAlgorithm.Fixed,
+      Delay = 100,
+      MaximumRetries = 2
+    });
+    IServiceProvider serviceProvider = services.BuildServiceProvider();
+    FakeCommandBus commandBus = new(serviceProvider);
+
+    Command command = new();
+    await Assert.ThrowsAsync<InvalidOperationException>(async () => await commandBus.ExecuteAsync(command, _cancellationToken));
+
+    Assert.Equal(3, commandBus.Exceptions.Count);
+    foreach (Exception exception in commandBus.Exceptions)
+    {
+      var argumentOutOfRange = Assert.IsType<ArgumentOutOfRangeException>(exception);
+      Assert.Equal("command", argumentOutOfRange.ParamName);
+    }
+  }
+
   [Fact(DisplayName = "ExecuteAsync: it should log a warning when an execution is retried.")]
   public async Task Given_Retry_When_ExecuteAsync_Then_WarningLogged()
   {

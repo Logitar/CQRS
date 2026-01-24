@@ -2,8 +2,19 @@
 
 internal class FakeCommandBus : CommandBus
 {
+  public List<Exception> Exceptions { get; } = [];
+
   public FakeCommandBus(IServiceProvider serviceProvider) : base(serviceProvider)
   {
+  }
+
+  protected override void OnException(Exception exception)
+  {
+    if (exception is TargetInvocationException targetInvocation && targetInvocation.InnerException is not null)
+    {
+      exception = targetInvocation.InnerException;
+    }
+    Exceptions.Add(exception);
   }
 
   protected override bool ShouldRetry<TResult>(ICommand<TResult> command, Exception exception)
